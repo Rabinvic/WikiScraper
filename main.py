@@ -63,7 +63,7 @@ def getExamples(outfile, lang):
                 printables.append(thingString)
             try:
                 tagFreeString = ''.join(printables)
-                if len(tagFreeString.split()) >= 15:
+                if len(tagFreeString.split()) >= 30:
                     break
             except:
                 print(r.url)
@@ -86,9 +86,9 @@ def getExamples(outfile, lang):
         # p = re.sub('<span class="[^"]*" style="[^"]*"><span style="[^"]*">[A-Za-z][A-Za-z]</span> <span style="font-size: \d\d%;">[A-Za-z][A-Za-z][A-Za-z][A-Za-z]</span></span>',"",p)
         # p= re.sub('\([A-Za-z]+: <i lang="[A-Za-z][A-Za-z]">([A-Za-z0-9]+( [A-Za-z0-9]+)+), or  en\|<span title="[^"]*"><i lang="[A-Za-z][A-Za-z]">([A-Za-z0-9]+( [A-Za-z0-9]+)+)</span>\)',"",p)
 
-        if len(tagFreeString.split()) >= 15:
+        if len(tagFreeString.split()) >= 30:
             break
-    if len(tagFreeString.split()) < 15:
+    if len(tagFreeString.split()) < 30:
         return False
     #print(p)
     #print(len(p.split()))
@@ -96,12 +96,12 @@ def getExamples(outfile, lang):
     words = tagFreeString.split()
     #print(ultimateString)
 
-    #example = ""
-    #for j in range(2):
-    example = lang+"|"
-    for i in range(15):
-        example += words[i] + " "
-    outfile.write(example + "\n")
+    example = ""
+    for j in range(2):
+        example = lang+"|"
+        for i in range(15):
+            example += words[j*15+i] + " "
+        outfile.write(example + "\n")
     return True
     # start = p.index("<a")
     # print(start)
@@ -114,14 +114,14 @@ if __name__ == '__main__':
     while j < 1000:
         if getExamples(outfile,"en"):
             totalRequests += 1
-            j+=1
+            j+=2
         else:
             continue
         foundSecond = False
         while not foundSecond:
             foundSecond = getExamples(outfile,"nl")
             totalRequests += 1
-        j+=1
+        j+=2
     timerEnd = time.time()
     print("Time:" +str(timerEnd-timerStart))
     print(totalRequests)
